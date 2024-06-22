@@ -6,6 +6,10 @@ class MessageFieldBoxl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    final textControler = TextEditingController();
+
+    final FocusNode focusNode = FocusNode();
+
     final outlineInputBorder = UnderlineInputBorder(
       borderSide: const BorderSide(color:  Colors.transparent),
       borderRadius: BorderRadius.circular(40)
@@ -13,27 +17,41 @@ class MessageFieldBoxl extends StatelessWidget {
 
 
     final inputDecoration = InputDecoration(
+        hintText: 'Terminaste de escribir "?"',
         enabledBorder: outlineInputBorder,
         focusedBorder: outlineInputBorder,
         filled: true,
         suffixIcon: IconButton(
           icon: const Icon(Icons.send_outlined),
           onPressed: () {
-            print("text value");
+            
+            final textValue = textControler.value.text;
+
+            print("boton $textValue");
+
+            textControler.clear();
           },
           )
        );
 
     return TextFormField(
+      onTapOutside: (event) {
+        focusNode.unfocus();
+      },
+
+      focusNode: focusNode,
+
+      controller: textControler,
+
       decoration: inputDecoration,
       
       onFieldSubmitted: (value) {
         print("subminted $value");
+        textControler.clear();
+        focusNode.requestFocus();
       },
 
-      onChanged: (value) {
-        print ("onChange $value");
-      },
+      
 
     );
   }
